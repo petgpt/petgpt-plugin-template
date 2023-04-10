@@ -1,0 +1,36 @@
+{
+  "name": "petgpt-plugin-template",
+  "version": "0.0.1",
+  "description": "plugin template for petgpt",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist/",
+    "src/",
+    "LICENSE",
+    "tsconfig.json",
+    "README.md",
+    "package.json"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/petgpt/petgpt-plugin-template"
+  },
+  "homepage": "https://github.com/petgpt/petgpt-plugin-template",
+  "scripts": {
+    "build": "tsc",
+    "pub": "yarn build && yarn publish"
+  },
+  "keywords": [
+    "petgpt",
+    "petgpt-plugin"
+  ],
+  "author": "AHGGG",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+  }
+}
