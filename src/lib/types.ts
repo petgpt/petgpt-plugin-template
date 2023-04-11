@@ -5,7 +5,9 @@ export interface IPetPluginInterface {
     name: string
     version: string
     description: string
-    config?: () => IPluginConfig[]
+    register: () => void
+    unregister: () => void
+    config?: (ctx: PetExpose) => IPluginConfig[]
     slotMenu?: SlotMenu[]
     handle: (data: PluginData) => Promise<IPluginHandlerResult> // 核心交互函数
     stop: () => Promise<void> // 停止handle的执行
@@ -76,7 +78,24 @@ export interface IDB{
 export interface SlotMenu {
     slot: number // 在哪个位置
     name: string // 名称
-    type: string // 类型
+    menu: SlotType // 类型
+    event?: SlotEvent
+}
+
+/**
+ * 当前这个slot的类型
+ */
+export interface SlotType {
+    type: 'switch' | 'select' | 'popover', // 类型，例如switch、select、popover
+    value?: any,
+    child?: IPluginConfig[]
+}
+
+/**
+ * 当前这个slot的事件定义
+ */
+export interface SlotEvent {
+    name: string // switch切换的时候，触发的事件 | select关闭的时候触发的事件 | popover关闭的时候触发的事件
 }
 
 /**
@@ -86,6 +105,7 @@ export interface IPluginConfig {
     name: string
     type: string
     required: boolean
+    value?: string // 用于config调用的时候，由插件返回最新的配置值，如果有的话
     default?: any
     alias?: string
     message?: string
@@ -101,4 +121,3 @@ export interface IPluginHandlerResult {
     success: boolean
     body: string // 返回的数据，默认是string，如果是json，需要自己解析。文字、图片连接都是string
 }
-

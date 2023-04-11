@@ -1,35 +1,63 @@
 import { PetExpose, IPetPluginInterface, PluginData } from './lib/types.js'
 import { log } from './lib/helper.js'
 
-function bindEventListener(ctx: PetExpose) { 
-    ctx.emitter.on('eventFromElectron', (data: any) => { 
-        log(`receive data: ${data}`)
+const pluginName = 'template'
+function bindEventListener(ctx: PetExpose) {
+    ctx.emitter.on(`plugin.${pluginName}.config.update`, (data: any) => {
+        log(`[event] [plugin.${pluginName}.config.update] receive data:`, data)
     })
+    ctx.emitter.on(`plugin.${pluginName}.data`, (data: PluginData) => {
+        ctx.emitter.emit('upsertLatestText', {
+            id: '123',
+            type: 'system',
+            text: 'Hello'
+        })
+        setTimeout(() => {
+            ctx.emitter.emit('upsertLatestText', {
+                id: '123',
+                type: 'system',
+                text: 'Hello world!'
+            })
+        }, 1000)
+        log(`[event] [plugin.${pluginName}.data] receive data:`, data)
+    });
 }
 export default (ctx: PetExpose): IPetPluginInterface => {
-    log(`init, ctx: ${JSON.stringify(ctx)}`)
-    bindEventListener(ctx)
-    setTimeout(() => ctx.emitter.emit('eventFromPlugin', 'data from plugin!!'), 3000)
+    const register = () => {
+        bindEventListener(ctx)
+        log(`[register] ctx: ${JSON.stringify(ctx)}`)
+    }
+
+    const unregister = () => {
+        ctx.emitter.removeAllListeners(`plugin.${pluginName}.data`)
+        ctx.emitter.removeAllListeners(`plugin.${pluginName}.config.update`)
+        log(`[unregister]`)
+    }
     return {
         name: 'test',
         version: '1.0.0',
         description: 'test',
+        register,
+        unregister,
         config: () => [{
             name: 'testM',
             type: 'input',
             required: true,
         }],
-        handle: (data: PluginData) => new Promise((resolve, _) => { 
+        slotMenu: [],
+        handle: (data: PluginData) => new Promise((resolve, _) => {
+            ctx.emitter.emit(`plugin.${pluginName}.data`, data) // 转发给自己的listener
+
             let res = {
                 id: '',
                 success: true,
                 body: `receive data: ${data.data}`
             }
-            log(`plugin receive:${JSON.stringify(data)}, handle res: ${res}`)
+            log(`[handle] plugin receive:${JSON.stringify(data)}, handle res: ${res}`)
             resolve(res)
         }),
-        stop: () => new Promise((resolve, _) => { 
-            log('stop')
+        stop: () => new Promise((resolve, _) => {
+            log('[stop]')
             resolve()
         }),
     }
