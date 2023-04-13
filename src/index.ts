@@ -21,6 +21,9 @@ function bindEventListener(ctx: PetExpose) {
         }, 1000)
         log(`[event] [plugin.${pluginName}.data] receive data:`, data)
     });
+    ctx.emitter.on(`plugin.${pluginName}.slot.push`, (newSlotData: any) => {
+        log(`newSlotData:`, newSlotData)
+    })
 }
 export default (ctx: PetExpose): IPetPluginInterface => {
     const register = () => {
@@ -44,7 +47,7 @@ export default (ctx: PetExpose): IPetPluginInterface => {
             type: 'input',
             required: true,
         }],
-        slotMenu: [],
+        slotMenu: () => [],
         handle: (data: PluginData) => new Promise((resolve, _) => {
             ctx.emitter.emit(`plugin.${pluginName}.data`, data) // 转发给自己的listener
 
