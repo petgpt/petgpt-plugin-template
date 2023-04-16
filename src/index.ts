@@ -24,6 +24,11 @@ function bindEventListener(ctx: PetExpose) {
     ctx.emitter.on(`plugin.${pluginName}.slot.push`, (newSlotData: any) => {
         log(`newSlotData:`, newSlotData)
     })
+
+    // 监听clear事件
+    ctx.emitter.on(`plugin.${pluginName}.func.clear`, () => {
+        log(`clear`)
+    })
 }
 export default (ctx: PetExpose): IPetPluginInterface => {
     const register = () => {
