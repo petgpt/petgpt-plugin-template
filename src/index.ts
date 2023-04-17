@@ -42,9 +42,9 @@ export default (ctx: PetExpose): IPetPluginInterface => {
         log(`[unregister]`)
     }
     return {
-        name: 'test',
-        version: '1.0.0',
-        description: 'test',
+        name: 'petgpt-plugin-template',
+        version: '0.0.4',
+        description: 'petgpt-plugin-template',
         register,
         unregister,
         config: () => [{
