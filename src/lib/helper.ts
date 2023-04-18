@@ -6,17 +6,17 @@ export class Log {
         this.ctx = ctx
     }
     public info(str: string, ...args: any[]) {
-        this.ctx.logger.info(`[plugin] [chatgpt] ${str}`, args)
+        this.ctx.logger.info(`[plugin] [template] ${str}`, args)
     }
     public error(...args: any[]) {
-        this.ctx.logger.error(`[plugin] [chatgpt] ${args}`)
+        this.ctx.logger.error(`[plugin] [template] ${args}`)
     }
 
     public warn(...args: any[]) {
-        this.ctx.logger.warn(`[plugin] [chatgpt] ${args}`)
+        this.ctx.logger.warn(`[plugin] [template] ${args}`)
     }
 
     public debug(...args: any[]) {
-        this.ctx.logger.debug(`[plugin] [chatgpt] ${args}`)
+        this.ctx.logger.debug(`[plugin] [template] ${args}`)
     }
 }
