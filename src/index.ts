@@ -50,7 +50,7 @@ export default (ctx: PetExpose): IPetPluginInterface => {
     const register = () => {
         log = new Log(ctx)
         bindEventListener(ctx)
-        log.debug(`[register] ctx: ${JSON.stringify(ctx)}`)
+        log.debug(`[register]`)
     }
 
     const unregister = () => {
