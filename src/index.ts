@@ -53,6 +53,10 @@ export default (ctx: PetExpose): IPetPluginInterface => {
         log.debug(`[register]`)
     }
 
+    const init = () => {
+        log.debug(`[init] client init!`)
+    }
+
     const unregister = () => {
         ctx.emitter.removeAllListeners(`plugin.${pluginName}.config.update`)
         ctx.emitter.removeAllListeners(`plugin.${pluginName}.data`)
@@ -63,6 +67,7 @@ export default (ctx: PetExpose): IPetPluginInterface => {
     return {
         register,
         unregister,
+        init,
         config: () => [{
             name: 'testM',
             type: 'input',
